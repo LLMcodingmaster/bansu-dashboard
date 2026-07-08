@@ -70,21 +70,25 @@
             gap: 20px;
         }
 
-        /* 이미지를 넣고 싶다면 background-image URL을 수정하세요 */
         .univ-box {
             width: 120px;
             height: 120px;
-            background-color: #2c2c2e;
+            background-color: #ffffff;
             border-radius: 16px;
             display: flex;
-            align-items: center;
+            align-items: flex-end;
             justify-content: center;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-sub);
-            border: 1px solid rgba(255,255,255,0.05);
-            background-size: cover;
+            font-size: 15px;
+            font-weight: 800;
+            color: #ffffff;
+            padding-bottom: 12px;
+            box-sizing: border-box;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.9);
+            border: 1px solid rgba(255,255,255,0.2);
+            background-size: contain;
             background-position: center;
+            background-repeat: no-repeat;
+            box-shadow: inset 0 -40px 40px -10px rgba(0,0,0,0.7);
         }
 
         .dday-section {
@@ -264,10 +268,10 @@
         <div class="goal-section panel">
             <h1 class="goal-title">고의, 연치, 동의한 27학번</h1>
             <div class="univ-images">
-                <!-- 실제 대학 로고 이미지가 있다면 style="background-image: url('링크');" 를 추가하세요 -->
-                <div class="univ-box">고려대 의대</div>
-                <div class="univ-box">연세대 치대</div>
-                <div class="univ-box">동의대 한의대</div>
+                <!-- 위키피디아 로고 이미지 직접 연동 -->
+                <div class="univ-box" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Korea_University_Emblem.png/240px-Korea_University_Emblem.png');">고려대 의대</div>
+                <div class="univ-box" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Yonsei_University_emblem.svg/240px-Yonsei_University_emblem.svg.png');">연세대 치대</div>
+                <div class="univ-box" style="background-image: url('https://upload.wikimedia.org/wikipedia/ko/1/1c/Dong-Eui_University_logotype.jpg'); background-size: cover;">동의대 한의대</div>
             </div>
         </div>
         <div class="dday-section">
@@ -324,10 +328,13 @@
             document.getElementById('dday-9').innerText = `9평 D-${diffSepMock > 0 ? diffSepMock : (diffSepMock === 0 ? 'Day' : '+' + Math.abs(diffSepMock))}`;
         }
 
-        /* 2. App Shortcuts Manager */
+        /* 2. App Shortcuts Manager - 기본 어플 세팅 완료 */
         let apps = JSON.parse(localStorage.getItem('studyApps')) || [
-            { id: 1, name: '알라미', url: 'alarmy://' },
-            { id: 2, name: 'GoodNotes', url: 'goodnotes5://' }
+            { id: 1, name: '카카오톡', url: 'kakaotalk://' },
+            { id: 2, name: '열품타', url: 'yptapp://' },
+            { id: 3, name: '대성마이맥', url: 'mimacstudy://' },
+            { id: 4, name: '메가스터디', url: 'megastudymsmart://' },
+            { id: 5, name: '알라미', url: 'alarmy://' }
         ];
 
         function renderApps() {
@@ -384,7 +391,6 @@
             const todayStr = new Date().toISOString().split('T')[0];
             let attendance = JSON.parse(localStorage.getItem('attendanceData')) || [];
             
-            // Add today if not exists
             if (!attendance.includes(todayStr)) {
                 attendance.push(todayStr);
                 localStorage.setItem('attendanceData', JSON.stringify(attendance));
@@ -393,7 +399,6 @@
             const grid = document.getElementById('grass-grid');
             grid.innerHTML = '';
 
-            // Generate last 30 days
             for (let i = 29; i >= 0; i--) {
                 const d = new Date();
                 d.setDate(d.getDate() - i);
@@ -431,7 +436,6 @@
             renderApps();
             initGrass();
             
-            // 자정 넘어가면 D-Day 업데이트 되도록 1시간마다 갱신
             setInterval(calculateDDay, 3600000); 
         };
     </script>
