@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>반수생 멘탈 관리 대시보드</title>
+    <style>
+        :root {
+            --bg-color: #000000;
+            --panel-bg: rgba(28, 28, 30, 0.7);
+            --text-main: #ffffff;
+            --text-sub: #8e8e93;
+            --accent: #0a84ff;
+            --danger: #ff453a;
+            --success: #30d158;
+            --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px 40px;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-family);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            box-sizing: border-box;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Glassmorphism Panels */
+        .panel {
+            background: var(--panel-bg);
+            border-radius: 20px;
+            padding: 24px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Top Section: Goal & D-Day */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .goal-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .goal-title {
+            font-size: 38px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin: 0;
+            background: linear-gradient(135deg, #fff, #a1a1a6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .univ-images {
+            display: flex;
+            gap: 20px;
+        }
+
+        /* 이미지를 넣고 싶다면 background-image URL을 수정하세요 */
+        .univ-box {
+            width: 120px;
+            height: 120px;
+            background-color: #2c2c2e;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-sub);
+            border: 1px solid rgba(255,255,255,0.05);
+            background-size: cover;
+            background-position: center;
+        }
+
+        .dday-section {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .dday-item {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--danger);
+            background: var(--panel-bg);
+            padding: 12px 24px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 69, 58, 0.3);
+        }
+
+        .dday-item.sub {
+            font-size: 22px;
+            color: #ff9f0a;
+            border: 1px solid rgba(255, 159, 10, 0.3);
+        }
+
+        /* Main Content Layout */
+        .main-container {
+            display: flex;
+            flex: 1;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        /* Left: Apps */
+        .apps-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-sub);
+            margin: 0 0 8px 0;
+        }
+
+        .app-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .app-btn {
+            background: #2c2c2e;
+            color: #fff;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.1s, background 0.2s;
+        }
+
+        .app-btn:active { transform: scale(0.96); }
+        .app-btn.delete {
+            background: transparent;
+            color: var(--text-sub);
+            padding: 0 8px;
+            font-size: 20px;
+        }
+
+        .add-app-btn {
+            background: rgba(10, 132, 255, 0.2);
+            color: var(--accent);
+            border: 1px dashed var(--accent);
+        }
+
+        /* Right: Mental Care */
+        .mental-section {
+            width: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            gap: 16px;
+        }
+
+        .mental-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 16px;
+            font-size: 22px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .mental-btn:active {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(0.98);
+        }
+
+        /* Bottom: Grass Tracker */
+        .grass-section {
+            height: 120px;
+        }
+
+        .grass-grid {
+            display: flex;
+            gap: 6px;
+            margin-top: 12px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .grass-cell {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            background-color: #2c2c2e;
+            flex-shrink: 0;
+        }
+
+        .grass-cell.active {
+            background-color: var(--success);
+            box-shadow: 0 0 8px rgba(48, 209, 88, 0.4);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            width: 80%;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .modal-text {
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 1.5;
+            color: #fff;
+            word-break: keep-all;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header: Goal & D-Day -->
+    <div class="header-container">
+        <div class="goal-section panel">
+            <h1 class="goal-title">고의, 연치, 동의한 27학번</h1>
+            <div class="univ-images">
+                <!-- 실제 대학 로고 이미지가 있다면 style="background-image: url('링크');" 를 추가하세요 -->
+                <div class="univ-box">고려대 의대</div>
+                <div class="univ-box">연세대 치대</div>
+                <div class="univ-box">동의대 한의대</div>
+            </div>
+        </div>
+        <div class="dday-section">
+            <div class="dday-item" id="dday-suneung">수능 D-??</div>
+            <div class="dday-item sub" id="dday-9">9평 D-??</div>
+        </div>
+    </div>
+
+    <!-- Main Content: Apps & Mental -->
+    <div class="main-container">
+        <div class="apps-section panel">
+            <h2 class="section-title">자주 쓰는 어플</h2>
+            <div class="app-list" id="app-list-container">
+                <!-- Apps will be rendered here -->
+            </div>
+        </div>
+
+        <div class="mental-section panel">
+            <h2 class="section-title" style="text-align: center;">긴급 멘탈 케어</h2>
+            <button class="mental-btn" onclick="showModal('피곤함')">피곤함 😵‍💫</button>
+            <button class="mental-btn" onclick="showModal('귀찮음')">귀찮음 🥱</button>
+            <button class="mental-btn" onclick="showModal('무기력함')">무기력함 🫠</button>
+        </div>
+    </div>
+
+    <!-- Footer: Grass Tracker -->
+    <div class="grass-section panel">
+        <h2 class="section-title">최근 30일 출석 기록</h2>
+        <div class="grass-grid" id="grass-grid">
+            <!-- Grass cells will be rendered here -->
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modal" onclick="closeModal()">
+        <div class="modal-content">
+            <div class="modal-text" id="modal-msg"></div>
+        </div>
+    </div>
+
+    <script>
+        /* 1. D-Day Calculator */
+        function calculateDDay() {
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            
+            const suneung = new Date('2026-11-19T00:00:00');
+            const sepMock = new Date('2026-09-02T00:00:00');
+
+            const diffSuneung = Math.ceil((suneung - today) / (1000 * 60 * 60 * 24));
+            const diffSepMock = Math.ceil((sepMock - today) / (1000 * 60 * 60 * 24));
+
+            document.getElementById('dday-suneung').innerText = `수능 D-${diffSuneung > 0 ? diffSuneung : (diffSuneung === 0 ? 'Day' : '+' + Math.abs(diffSuneung))}`;
+            document.getElementById('dday-9').innerText = `9평 D-${diffSepMock > 0 ? diffSepMock : (diffSepMock === 0 ? 'Day' : '+' + Math.abs(diffSepMock))}`;
+        }
+
+        /* 2. App Shortcuts Manager */
+        let apps = JSON.parse(localStorage.getItem('studyApps')) || [
+            { id: 1, name: '알라미', url: 'alarmy://' },
+            { id: 2, name: 'GoodNotes', url: 'goodnotes5://' }
+        ];
+
+        function renderApps() {
+            const container = document.getElementById('app-list-container');
+            container.innerHTML = '';
+            
+            apps.forEach(app => {
+                const wrapper = document.createElement('div');
+                wrapper.style.display = 'flex';
+                
+                const btn = document.createElement('button');
+                btn.className = 'app-btn';
+                btn.innerText = app.name;
+                btn.onclick = () => window.location.href = app.url;
+
+                const delBtn = document.createElement('button');
+                delBtn.className = 'app-btn delete';
+                delBtn.innerHTML = '×';
+                delBtn.onclick = () => deleteApp(app.id);
+
+                wrapper.appendChild(btn);
+                wrapper.appendChild(delBtn);
+                container.appendChild(wrapper);
+            });
+
+            const addBtn = document.createElement('button');
+            addBtn.className = 'app-btn add-app-btn';
+            addBtn.innerText = '+ 어플 추가';
+            addBtn.onclick = addApp;
+            container.appendChild(addBtn);
+        }
+
+        function addApp() {
+            const name = prompt('어플 이름을 입력하세요 (예: 노션)');
+            if (!name) return;
+            const url = prompt('어플의 URL Scheme을 입력하세요 (예: notion://)');
+            if (!url) return;
+
+            apps.push({ id: Date.now(), name, url });
+            localStorage.setItem('studyApps', JSON.stringify(apps));
+            renderApps();
+        }
+
+        function deleteApp(id) {
+            if(confirm('이 어플을 삭제하시겠습니까?')) {
+                apps = apps.filter(app => app.id !== id);
+                localStorage.setItem('studyApps', JSON.stringify(apps));
+                renderApps();
+            }
+        }
+
+        /* 3. Grass (Attendance) Tracker */
+        function initGrass() {
+            const todayStr = new Date().toISOString().split('T')[0];
+            let attendance = JSON.parse(localStorage.getItem('attendanceData')) || [];
+            
+            // Add today if not exists
+            if (!attendance.includes(todayStr)) {
+                attendance.push(todayStr);
+                localStorage.setItem('attendanceData', JSON.stringify(attendance));
+            }
+
+            const grid = document.getElementById('grass-grid');
+            grid.innerHTML = '';
+
+            // Generate last 30 days
+            for (let i = 29; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                const dateStr = d.toISOString().split('T')[0];
+                
+                const cell = document.createElement('div');
+                cell.className = 'grass-cell';
+                if (attendance.includes(dateStr)) {
+                    cell.classList.add('active');
+                }
+                cell.title = dateStr;
+                grid.appendChild(cell);
+            }
+        }
+
+        /* 4. Mental Care Modal */
+        const mentalTexts = {
+            '피곤함': '피곤해? 그럼 일단 KBS 조져. 그리고 절대 자지마. 너가 꿈을 꿀 때 경쟁자들은 꿈을 이루고있다는걸 명심해. KBS보고 잠 깬 뒤엔 얄짤없이 펜 잡아라.',
+            '귀찮음': '귀찮지? 네 경쟁자들은 지금 이 순간에도 문제들을 씹어 먹고 있다. 의치한이 그렇게 만만해 보이냐? 딱 5분만 책 펴놓고 있어 봐라.',
+            '무기력함': '처음 반수를 결심했던 그 독기를 기억해라. 남은 시간 동안 결과로 증명하면 이 모든 과정은 전설이 된다. 넌 할 수 있다.'
+        };
+
+        function showModal(type) {
+            document.getElementById('modal-msg').innerText = mentalTexts[type];
+            document.getElementById('modal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('show');
+        }
+
+        /* Initialize */
+        window.onload = () => {
+            calculateDDay();
+            renderApps();
+            initGrass();
+            
+            // 자정 넘어가면 D-Day 업데이트 되도록 1시간마다 갱신
+            setInterval(calculateDDay, 3600000); 
+        };
+    </script>
+</body>
+</html>
