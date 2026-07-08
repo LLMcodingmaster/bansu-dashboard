@@ -31,7 +31,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Glassmorphism Panels */
         .panel {
             background: var(--panel-bg);
             border-radius: 20px;
@@ -39,9 +38,11 @@
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Top Section: Goal & D-Day */
+        /* Header */
         .header-container {
             display: flex;
             justify-content: space-between;
@@ -49,240 +50,134 @@
             margin-bottom: 24px;
         }
 
-        .goal-section {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
+        .goal-section { display: flex; flex-direction: column; gap: 16px; width: 70%; }
         .goal-title {
-            font-size: 38px;
-            font-weight: 800;
-            letter-spacing: -1px;
-            margin: 0;
+            font-size: 26px; font-weight: 800; letter-spacing: -0.5px; margin: 0;
+            line-height: 1.3; word-break: keep-all; min-height: 70px;
             background: linear-gradient(135deg, #fff, #a1a1a6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            display: flex; align-items: center;
         }
 
-        .univ-images {
-            display: flex;
-            gap: 20px;
-        }
-
-        /* 커스텀 이미지가 들어갈 박스 */
+        .univ-images { display: flex; gap: 20px; }
         .univ-box {
-            width: 120px;
-            height: 120px;
-            background-color: #2c2c2e;
-            border-radius: 16px;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            font-size: 15px;
-            font-weight: 800;
-            color: #ffffff;
-            padding-bottom: 12px;
-            box-sizing: border-box;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.9);
-            border: 1px dashed rgba(255,255,255,0.4); /* 클릭을 유도하는 점선 테두리 */
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
+            width: 120px; height: 120px; background-color: #2c2c2e; border-radius: 16px;
+            display: flex; align-items: flex-end; justify-content: center;
+            font-size: 15px; font-weight: 800; color: #ffffff; padding-bottom: 12px;
+            box-sizing: border-box; text-shadow: 0 2px 5px rgba(0,0,0,0.9);
+            border: 1px dashed rgba(255,255,255,0.4); background-size: cover;
+            background-position: center; background-repeat: no-repeat;
             box-shadow: inset 0 -40px 40px -10px rgba(0,0,0,0.7);
-            cursor: pointer;
-            transition: transform 0.1s, border 0.2s;
+            cursor: pointer; transition: transform 0.1s, border 0.2s;
+        }
+        .univ-box:hover { transform: scale(1.05); border: 1px solid rgba(255,255,255,0.8); }
+
+        .dday-section { text-align: right; display: flex; flex-direction: column; gap: 12px; }
+        .dday-item { font-size: 28px; font-weight: 700; color: var(--danger); background: var(--panel-bg); padding: 12px 24px; border-radius: 16px; border: 1px solid rgba(255, 69, 58, 0.3); }
+        .dday-item.sub { font-size: 22px; color: #ff9f0a; border: 1px solid rgba(255, 159, 10, 0.3); }
+
+        /* Main Content */
+        .main-container { display: flex; flex: 1; gap: 24px; margin-bottom: 24px; overflow: hidden; }
+
+        /* Todo Section */
+        .todo-section { flex: 1; overflow-y: auto; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .section-title { font-size: 20px; font-weight: 600; color: var(--text-sub); margin: 0; }
+        
+        .calendar-btn {
+            background: rgba(10, 132, 255, 0.2); color: var(--accent);
+            border: 1px solid var(--accent); padding: 6px 12px; border-radius: 8px;
+            font-size: 14px; font-weight: 600; cursor: pointer;
         }
 
-        .univ-box:hover {
-            transform: scale(1.05);
-            border: 1px solid rgba(255,255,255,0.8);
+        .todo-progress {
+            font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 16px;
+            padding: 12px; background: rgba(255,255,255,0.05); border-radius: 12px; text-align: center;
         }
 
-        .dday-section {
-            text-align: right;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+        .todo-input-group { display: flex; gap: 10px; margin-bottom: 16px; }
+        .todo-input {
+            flex: 1; background: #2c2c2e; border: 1px solid #3a3a3c; border-radius: 10px;
+            padding: 12px; color: #fff; font-size: 16px;
+        }
+        .todo-input:focus { outline: none; border-color: var(--accent); }
+        .add-todo-btn {
+            background: var(--accent); color: #fff; border: none; padding: 0 20px;
+            border-radius: 10px; font-weight: 700; cursor: pointer;
         }
 
-        .dday-item {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--danger);
-            background: var(--panel-bg);
-            padding: 12px 24px;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 69, 58, 0.3);
+        .todo-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+        .todo-item {
+            display: flex; align-items: center; background: #1c1c1e; padding: 12px 16px;
+            border-radius: 12px; gap: 12px;
         }
+        .todo-item.completed .todo-text { text-decoration: line-through; color: var(--text-sub); }
+        .todo-checkbox { width: 22px; height: 22px; cursor: pointer; accent-color: var(--success); }
+        .todo-text { flex: 1; font-size: 17px; font-weight: 500; word-break: break-all; transition: 0.2s; }
+        .todo-action-btn { background: none; border: none; color: var(--text-sub); font-size: 14px; cursor: pointer; }
 
-        .dday-item.sub {
-            font-size: 22px;
-            color: #ff9f0a;
-            border: 1px solid rgba(255, 159, 10, 0.3);
-        }
-
-        /* Main Content Layout */
-        .main-container {
-            display: flex;
-            flex: 1;
-            gap: 24px;
-            margin-bottom: 24px;
-        }
-
-        /* Left: Apps */
-        .apps-section {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .section-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--text-sub);
-            margin: 0 0 8px 0;
-        }
-
-        .app-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .app-btn {
-            background: #2c2c2e;
-            color: #fff;
-            border: none;
-            padding: 16px 24px;
-            border-radius: 14px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: transform 0.1s, background 0.2s;
-        }
-
-        .app-btn:active { transform: scale(0.96); }
-        .app-btn.delete {
-            background: transparent;
-            color: var(--text-sub);
-            padding: 0 8px;
-            font-size: 20px;
-        }
-
-        .add-app-btn {
-            background: rgba(10, 132, 255, 0.2);
-            color: var(--accent);
-            border: 1px dashed var(--accent);
-        }
-
-        /* Right: Mental Care */
-        .mental-section {
-            width: 280px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            gap: 16px;
-        }
-
+        /* Mental Care */
+        .mental-section { width: 280px; display: flex; flex-direction: column; justify-content: flex-end; gap: 16px; }
         .mental-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 20px;
-            border-radius: 16px;
-            font-size: 22px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px; border-radius: 16px; font-size: 22px; font-weight: 700; cursor: pointer; transition: all 0.2s;
         }
+        .mental-btn:active { background: rgba(255, 255, 255, 0.2); transform: scale(0.98); }
 
-        .mental-btn:active {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(0.98);
-        }
+        /* Grass Tracker */
+        .grass-section { height: 120px; }
+        .grass-grid { display: flex; gap: 6px; margin-top: 12px; overflow-x: auto; padding-bottom: 8px; }
+        .grass-cell { width: 24px; height: 24px; border-radius: 6px; background-color: #2c2c2e; flex-shrink: 0; }
+        .grass-cell.active { background-color: var(--success); box-shadow: 0 0 8px rgba(48, 209, 88, 0.4); }
 
-        /* Bottom: Grass Tracker */
-        .grass-section {
-            height: 120px;
-        }
-
-        .grass-grid {
-            display: flex;
-            gap: 6px;
-            margin-top: 12px;
-            overflow-x: auto;
-            padding-bottom: 8px;
-        }
-
-        .grass-cell {
-            width: 24px;
-            height: 24px;
-            border-radius: 6px;
-            background-color: #2c2c2e;
-            flex-shrink: 0;
-        }
-
-        .grass-cell.active {
-            background-color: var(--success);
-            box-shadow: 0 0 8px rgba(48, 209, 88, 0.4);
-        }
-
-        /* Modal */
+        /* Modals */
         .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 1000;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: all 0.3s ease; z-index: 1000;
         }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .modal-content { width: 80%; max-width: 800px; text-align: center; }
+        .modal-text { font-size: 42px; font-weight: 800; line-height: 1.5; color: #fff; word-break: keep-all; text-shadow: 0 4px 20px rgba(0,0,0,0.5); }
 
-        .modal-overlay.show {
-            opacity: 1;
-            visibility: visible;
+        /* Calendar Modal */
+        .calendar-content {
+            background: #1c1c1e; width: 90%; max-width: 800px; padding: 24px;
+            border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); text-align: left;
         }
-
-        .modal-content {
-            width: 80%;
-            max-width: 800px;
-            text-align: center;
+        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .cal-nav { background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; }
+        .cal-title { font-size: 24px; font-weight: 700; color: #fff; }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+        .cal-day-name { text-align: center; font-weight: 600; color: var(--text-sub); margin-bottom: 8px; }
+        .cal-cell {
+            background: #2c2c2e; border-radius: 10px; min-height: 80px; padding: 8px;
+            cursor: pointer; border: 1px solid transparent; display: flex; flex-direction: column; gap: 4px;
         }
-
-        .modal-text {
-            font-size: 42px;
-            font-weight: 800;
-            line-height: 1.5;
-            color: #fff;
-            word-break: keep-all;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        .cal-cell:hover { border-color: rgba(255,255,255,0.3); }
+        .cal-date { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+        .cal-event {
+            font-size: 11px; background: rgba(10, 132, 255, 0.3); color: #fff;
+            padding: 2px 4px; border-radius: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
+        .cal-close-btn { width: 100%; padding: 14px; margin-top: 20px; border-radius: 12px; background: #3a3a3c; color: #fff; border: none; font-size: 16px; font-weight: 700; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <!-- 숨겨진 이미지 업로더 -->
     <input type="file" id="image-uploader" accept="image/*" style="display: none;">
 
-    <!-- Header: Goal & D-Day -->
     <div class="header-container">
-        <div class="goal-section panel">
-            <h1 class="goal-title">고의, 연치, 동의한 27학번</h1>
-            <div class="univ-images">
-                <!-- 클릭하면 이미지를 바꿀 수 있도록 id와 onclick 이벤트 추가 -->
-                <div class="univ-box" id="univ-1" onclick="triggerImageUpload('univ-1')">고려대 의대 +</div>
-                <div class="univ-box" id="univ-2" onclick="triggerImageUpload('univ-2')">연세대 치대 +</div>
-                <div class="univ-box" id="univ-3" onclick="triggerImageUpload('univ-3')">동의대 한의대 +</div>
+        <div class="goal-section panel" style="flex-direction: row; align-items: center; padding: 20px;">
+            <div style="display: flex; flex-direction: column; gap: 16px; margin-right: 30px; width: 100%;">
+                <!-- 명언이 표시될 공간 -->
+                <h1 class="goal-title" id="quote-display">고의, 연치, 동의한 27학번</h1>
+                <div class="univ-images">
+                    <div class="univ-box" id="univ-1" onclick="triggerImageUpload('univ-1')">고려대 의대 +</div>
+                    <div class="univ-box" id="univ-2" onclick="triggerImageUpload('univ-2')">연세대 치대 +</div>
+                    <div class="univ-box" id="univ-3" onclick="triggerImageUpload('univ-3')">동의대 한의대 +</div>
+                </div>
             </div>
         </div>
         <div class="dday-section">
@@ -291,200 +186,380 @@
         </div>
     </div>
 
-    <!-- Main Content: Apps & Mental -->
     <div class="main-container">
-        <div class="apps-section panel">
-            <h2 class="section-title">자주 쓰는 어플</h2>
-            <div class="app-list" id="app-list-container">
-                <!-- Apps will be rendered here -->
+        <div class="todo-section panel">
+            <div class="section-header">
+                <h2 class="section-title">오늘의 미션</h2>
+                <button class="calendar-btn" onclick="openCalendar()">📅 달력 보기</button>
             </div>
+            
+            <div class="todo-progress" id="todo-progress-text">의치한까지 0%</div>
+
+            <div class="todo-input-group">
+                <input type="text" class="todo-input" id="new-todo" placeholder="오늘 반드시 끝낼 일을 입력하세요" onkeypress="if(event.key==='Enter') addTodo()">
+                <button class="add-todo-btn" onclick="addTodo()">추가</button>
+            </div>
+
+            <ul class="todo-list" id="todo-list"></ul>
         </div>
 
         <div class="mental-section panel">
             <h2 class="section-title" style="text-align: center;">긴급 멘탈 케어</h2>
-            <button class="mental-btn" onclick="showModal('피곤함')">피곤함 😵‍💫</button>
-            <button class="mental-btn" onclick="showModal('귀찮음')">귀찮음 🥱</button>
-            <button class="mental-btn" onclick="showModal('무기력함')">무기력함 🫠</button>
+            <button class="mental-btn" onclick="showMentalModal('피곤함')">피곤함 😵‍💫</button>
+            <button class="mental-btn" onclick="showMentalModal('귀찮음')">귀찮음 🥱</button>
+            <button class="mental-btn" onclick="showMentalModal('무기력함')">무기력함 🫠</button>
         </div>
     </div>
 
-    <!-- Footer: Grass Tracker -->
     <div class="grass-section panel">
         <h2 class="section-title">최근 30일 출석 기록</h2>
-        <div class="grass-grid" id="grass-grid">
-            <!-- Grass cells will be rendered here -->
+        <div class="grass-grid" id="grass-grid"></div>
+    </div>
+
+    <div class="modal-overlay" id="mental-modal" onclick="closeMentalModal()">
+        <div class="modal-content">
+            <div class="modal-text" id="mental-modal-msg"></div>
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal-overlay" id="modal" onclick="closeModal()">
-        <div class="modal-content">
-            <div class="modal-text" id="modal-msg"></div>
+    <div class="modal-overlay" id="calendar-modal">
+        <div class="calendar-content">
+            <div class="cal-header">
+                <button class="cal-nav" onclick="changeMonth(-1)">◀</button>
+                <div class="cal-title" id="cal-title"></div>
+                <button class="cal-nav" onclick="changeMonth(1)">▶</button>
+            </div>
+            <div class="cal-grid" id="cal-grid"></div>
+            <button class="cal-close-btn" onclick="closeCalendar()">닫기</button>
         </div>
     </div>
 
     <script>
-        /* --- 0. 커스텀 이미지 업로드 기능 --- */
-        let currentUploadTarget = null;
+        /* --- 0. Quotes Rotation (100개) --- */
+        const quotes = [
+            "네가 자는 동안 누군가는 꿈을 이루고 있다.",
+            "서울대라는 타이틀에 안주하지 않고 메디컬을 향해 던진 승부수, 결과로 증명해라.",
+            "고통은 순간이지만, 포기는 영원히 남는다.",
+            "기적은 노력의 또 다른 이름이다.",
+            "언매 15분 컷, 메디컬로 가는 첫 번째 관문이다.",
+            "최선을 다했다는 변명은 결과 앞에서 무의미하다.",
+            "지금 땀을 흘리지 않으면 나중에 눈물을 흘려야 한다.",
+            "오늘 걷지 않으면 내일은 뛰어야 한다.",
+            "불안하면 공부해라. 불안함은 지식이 부족할 때 찾아온다.",
+            "재능은 한계를 만들지만, 노력은 기적을 만든다.",
+            "포기하고 싶은 그 순간이 진짜 승부처다.",
+            "네가 지금 포기하면, 누군가는 쾌재를 부른다.",
+            "메디컬은 운이 아니라 독기다.",
+            "시작은 반이 아니다. 끝까지 해야 끝이다.",
+            "성공은 가장 절박한 자의 몫이다.",
+            "오늘의 유혹을 참으면, 내일의 인생이 바뀐다.",
+            "핑계를 찾는 대신 방법을 찾아라.",
+            "기하의 본질은 직관과 논리다. 핑계 대지 말고 뚫어내라.",
+            "지금 이 순간에도 네 경쟁자는 페이지를 넘기고 있다.",
+            "나를 죽이지 못하는 고통은 나를 더 강하게 만든다.",
+            "할 수 있다고 믿든, 할 수 없다고 믿든, 네가 믿는 대로 된다.",
+            "네 한계는 네가 정하는 것이다. 선을 그어버리지 마라.",
+            "의치한 27학번, 내 자리는 이미 정해져 있다.",
+            "가장 어두운 밤이 지나야 가장 눈부신 새벽이 온다.",
+            "지금의 고생은 훗날 네가 입을 가운의 무게다.",
+            "타협하는 순간, 평범해진다.",
+            "승리는 1%의 재능과 99%의 끈기다.",
+            "네 인생을 바꿀 수 있는 사람은 오직 너뿐이다.",
+            "나중에 후회할 일은 지금 만들지 마라.",
+            "펜을 잡는 순간 모든 잡념을 버려라.",
+            "남들과 똑같이 해서는 남들과 다를 수 없다.",
+            "목표가 확실한 사람은 흔들리지 않는다.",
+            "성적은 투자한 시간에 비례한다. 배신하지 않는다.",
+            "네가 버린 1분이 모여 네 대학 간판을 바꾼다.",
+            "성공으로 가는 엘리베이터는 고장 났다. 계단으로 올라가라.",
+            "힘들 때 쉬는 건 하수다. 힘들 때 견디는 게 고수다.",
+            "스마트폰을 내려놓는 순간, 너의 점수가 올라간다.",
+            "과정은 고통스럽지만 결과는 달콤하다.",
+            "오늘 하루를 완벽하게 통제해라. 그러면 인생이 통제된다.",
+            "운명은 우연이 아니라 선택이다.",
+            "가장 위대한 승리는 나 자신을 이기는 것이다.",
+            "기출은 거짓말을 하지 않는다.",
+            "아무것도 하지 않으면 아무 일도 일어나지 않는다.",
+            "네가 할 수 있는 최선보다 항상 한 발짝 더 가라.",
+            "최고의 자리를 박차고 나온 그 독기를 끝까지 밀어붙여라.",
+            "성공한 사람들의 공통점은 포기를 모른다는 것이다.",
+            "너의 경쟁자는 어제의 너다.",
+            "눈물로 씨를 뿌리는 자는 기쁨으로 거두리라.",
+            "피할 수 없다면, 압도해라.",
+            "가장 무서운 적은 나의 나태함이다.",
+            "하루하루를 인생의 마지막 날처럼 치열하게 살아라.",
+            "지금 편하면 나중에 불편해진다.",
+            "정답은 오직 네 펜 끝에 있다.",
+            "쉬운 길은 붐빈다. 어려운 길이 정답이다.",
+            "네가 흘린 땀방울 하나가 수능 점수 1점이다.",
+            "오늘의 나태는 내일의 후회로 돌아온다.",
+            "목표를 낮추지 말고 노력을 높여라.",
+            "변명은 실패자들의 전유물이다.",
+            "할 수 있는 일을 다 하고 나서 기적을 바라라.",
+            "어차피 할 거라면 1등을 목표로 해라.",
+            "네가 공부하는 이유는 너 자신을 증명하기 위해서다.",
+            "불가능은 사실이 아니라 의견일 뿐이다.",
+            "기초가 흔들리면 탑은 무너진다. 기본에 충실해라.",
+            "공부는 머리로 하는 게 아니라 엉덩이로 하는 거다.",
+            "네가 포기하는 순간, 누군가는 네 자리를 차지한다.",
+            "오늘 하루도 버티지 못하면서 어떻게 인생을 바꾸려 하는가.",
+            "성공은 반복되는 일상 속에 숨어 있다.",
+            "생각만 하지 말고 당장 행동해라.",
+            "네가 피곤함을 느낄 때, 합격은 더 가까워진다.",
+            "승자는 행동으로 말하고 패자는 핑계로 말한다.",
+            "모든 위대한 성취는 시간과 인내의 결과다.",
+            "의사가 되는 길에 적당히는 없다.",
+            "오늘의 한계가 내일의 출발점이다.",
+            "실패는 넘어지는 것이 아니라 주저앉아 있는 것이다.",
+            "네가 꿈을 꾸는 동안 시간은 무심하게 흘러간다.",
+            "공부가 힘들다고 불평하지 마라. 공부할 수 있는 것도 특권이다.",
+            "한 번의 실수는 경험이지만, 두 번의 실수는 실패다.",
+            "결과가 모든 것을 증명한다.",
+            "네가 걷는 이 길이 네 인생의 가장 위대한 여정이 될 것이다.",
+            "가장 빛나는 순간은 가장 어두운 터널 끝에 있다.",
+            "네 자신을 믿어라. 기적은 거기서부터 시작된다.",
+            "오늘 푼 문제 하나가 너의 운명을 바꿀 수 있다.",
+            "타인의 시선보다 네 자신의 확신이 중요하다.",
+            "성공하려면 먼저 성공할 수 있다고 믿어야 한다.",
+            "노력은 절대 너를 배신하지 않는다.",
+            "네가 선택한 길이다. 끝까지 책임져라.",
+            "시간은 누구에게나 공평하지만, 결과는 공평하지 않다.",
+            "지금 이 순간의 고통을 즐겨라.",
+            "너의 한계는 아직 오지 않았다.",
+            "목표는 달성하기 위해 존재하는 것이다.",
+            "네가 포기하지 않는 한 실패는 없다.",
+            "오늘의 치열함이 내일의 여유를 만든다.",
+            "공부는 끝이 없다. 끝까지 가는 자가 승리한다.",
+            "네가 흘린 땀은 결코 헛되지 않을 것이다.",
+            "성공의 비결은 단 하나, 절대 포기하지 않는 것이다.",
+            "너의 미래는 네가 오늘 무엇을 하느냐에 달려 있다.",
+            "자신을 이기는 자가 세상을 이긴다.",
+            "의치한 27학번, 네 이름이 불릴 자리다.",
+            "네 인생의 주인공은 바로 너다. 멋진 엔딩을 만들어라.",
+            "메디컬은 운이 아니라 압도적인 실력이다."
+        ];
 
-        function triggerImageUpload(boxId) {
-            currentUploadTarget = boxId;
-            document.getElementById('image-uploader').click();
+        function rotateQuote() {
+            const quoteDisplay = document.getElementById('quote-display');
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            quoteDisplay.style.opacity = 0; 
+            setTimeout(() => {
+                quoteDisplay.innerText = quotes[randomIndex];
+                quoteDisplay.style.opacity = 1; 
+            }, 300);
         }
+        
+        document.getElementById('quote-display').style.transition = "opacity 0.3s ease";
 
+        /* --- 1. Image Upload (글씨 숨기기 적용) --- */
+        let currentUploadTarget = null;
+        function triggerImageUpload(boxId) { currentUploadTarget = boxId; document.getElementById('image-uploader').click(); }
         document.getElementById('image-uploader').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
-
             const reader = new FileReader();
             reader.onload = function(event) {
                 const base64Image = event.target.result;
                 const box = document.getElementById(currentUploadTarget);
-                
-                // 화면에 이미지 적용
                 box.style.backgroundImage = `url(${base64Image})`;
-                // 플러스 기호와 글씨를 조금 더 깔끔하게 하기 위해 필요시 조정 가능 (현재는 글자 유지)
-                
-                // 로컬 스토리지에 영구 저장
+                box.innerText = ""; 
+                box.style.boxShadow = "none"; 
                 localStorage.setItem('img_' + currentUploadTarget, base64Image);
             };
-            reader.readAsDataURL(file); // 이미지를 문자로 변환하여 저장
+            reader.readAsDataURL(file);
         });
-
-        // 저장된 이미지 불러오기
+        
         function loadImages() {
             ['univ-1', 'univ-2', 'univ-3'].forEach(id => {
                 const savedImage = localStorage.getItem('img_' + id);
                 if (savedImage) {
-                    document.getElementById(id).style.backgroundImage = `url(${savedImage})`;
+                    const box = document.getElementById(id);
+                    box.style.backgroundImage = `url(${savedImage})`;
+                    box.innerText = ""; 
+                    box.style.boxShadow = "none";
                 }
             });
         }
 
-        /* --- 1. D-Day Calculator --- */
+        /* --- 2. D-Day --- */
         function calculateDDay() {
-            const today = new Date();
-            today.setHours(0,0,0,0);
-            
+            const today = new Date(); today.setHours(0,0,0,0);
             const suneung = new Date('2026-11-19T00:00:00');
             const sepMock = new Date('2026-09-02T00:00:00');
-
             const diffSuneung = Math.ceil((suneung - today) / (1000 * 60 * 60 * 24));
             const diffSepMock = Math.ceil((sepMock - today) / (1000 * 60 * 60 * 24));
-
             document.getElementById('dday-suneung').innerText = `수능 D-${diffSuneung > 0 ? diffSuneung : (diffSuneung === 0 ? 'Day' : '+' + Math.abs(diffSuneung))}`;
             document.getElementById('dday-9').innerText = `9평 D-${diffSepMock > 0 ? diffSepMock : (diffSepMock === 0 ? 'Day' : '+' + Math.abs(diffSepMock))}`;
         }
 
-        /* --- 2. App Shortcuts Manager --- */
-        let apps = JSON.parse(localStorage.getItem('studyApps')) || [
-            { id: 1, name: '카카오톡', url: 'kakaotalk://' },
-            { id: 2, name: '열품타', url: 'yptapp://' },
-            { id: 3, name: '대성마이맥', url: 'mimacstudy://' },
-            { id: 4, name: '메가스터디', url: 'megastudymsmart://' },
-            { id: 5, name: '알라미', url: 'alarmy://' }
-        ];
+        /* --- 3. Todo List --- */
+        let todos = [];
+        const todayStr = new Date().toISOString().split('T')[0];
+        
+        function loadTodos() {
+            todos = JSON.parse(localStorage.getItem('todos_' + todayStr)) || [];
+            renderTodos();
+        }
+        function saveTodos() {
+            localStorage.setItem('todos_' + todayStr, JSON.stringify(todos));
+            renderTodos();
+        }
 
-        function renderApps() {
-            const container = document.getElementById('app-list-container');
-            container.innerHTML = '';
-            
-            apps.forEach(app => {
-                const wrapper = document.createElement('div');
-                wrapper.style.display = 'flex';
-                
-                const btn = document.createElement('button');
-                btn.className = 'app-btn';
-                btn.innerText = app.name;
-                btn.onclick = () => window.location.href = app.url;
+        function renderTodos() {
+            const list = document.getElementById('todo-list');
+            list.innerHTML = '';
+            let completedCount = 0;
 
-                const delBtn = document.createElement('button');
-                delBtn.className = 'app-btn delete';
-                delBtn.innerHTML = '×';
-                delBtn.onclick = () => deleteApp(app.id);
-
-                wrapper.appendChild(btn);
-                wrapper.appendChild(delBtn);
-                container.appendChild(wrapper);
+            todos.forEach((todo, index) => {
+                if(todo.completed) completedCount++;
+                const li = document.createElement('li');
+                li.className = `todo-item ${todo.completed ? 'completed' : ''}`;
+                li.innerHTML = `
+                    <input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked' : ''} onchange="toggleTodo(${index})">
+                    <span class="todo-text">${todo.text}</span>
+                    <button class="todo-action-btn" onclick="editTodo(${index})">수정</button>
+                    <button class="todo-action-btn" onclick="deleteTodo(${index})">삭제</button>
+                `;
+                list.appendChild(li);
             });
 
-            const addBtn = document.createElement('button');
-            addBtn.className = 'app-btn add-app-btn';
-            addBtn.innerText = '+ 어플 추가';
-            addBtn.onclick = addApp;
-            container.appendChild(addBtn);
-        }
-
-        function addApp() {
-            const name = prompt('어플 이름을 입력하세요 (예: 노션)');
-            if (!name) return;
-            const url = prompt('어플의 URL Scheme을 입력하세요 (예: notion://)');
-            if (!url) return;
-
-            apps.push({ id: Date.now(), name, url });
-            localStorage.setItem('studyApps', JSON.stringify(apps));
-            renderApps();
-        }
-
-        function deleteApp(id) {
-            if(confirm('이 어플을 삭제하시겠습니까?')) {
-                apps = apps.filter(app => app.id !== id);
-                localStorage.setItem('studyApps', JSON.stringify(apps));
-                renderApps();
-            }
-        }
-
-        /* --- 3. Grass (Attendance) Tracker --- */
-        function initGrass() {
-            const todayStr = new Date().toISOString().split('T')[0];
-            let attendance = JSON.parse(localStorage.getItem('attendanceData')) || [];
-            
-            if (!attendance.includes(todayStr)) {
-                attendance.push(todayStr);
-                localStorage.setItem('attendanceData', JSON.stringify(attendance));
-            }
-
-            const grid = document.getElementById('grass-grid');
-            grid.innerHTML = '';
-
-            for (let i = 29; i >= 0; i--) {
-                const d = new Date();
-                d.setDate(d.getDate() - i);
-                const dateStr = d.toISOString().split('T')[0];
-                
-                const cell = document.createElement('div');
-                cell.className = 'grass-cell';
-                if (attendance.includes(dateStr)) {
-                    cell.classList.add('active');
+            const progressEl = document.getElementById('todo-progress-text');
+            if (todos.length === 0) {
+                progressEl.innerText = "오늘 할 일을 추가해라.";
+                progressEl.style.color = "#8e8e93";
+            } else {
+                const percent = Math.round((completedCount / todos.length) * 100);
+                if (percent === 100) {
+                    progressEl.innerText = "의치한까지 100% - 내일도 존나 열심히 달려보자🔥";
+                    progressEl.style.color = "var(--success)";
+                } else {
+                    progressEl.innerText = `의치한까지 ${percent}%`;
+                    progressEl.style.color = "#fff";
                 }
-                cell.title = dateStr;
+            }
+        }
+
+        function addTodo() {
+            const input = document.getElementById('new-todo');
+            const text = input.value.trim();
+            if(text) {
+                todos.push({ text: text, completed: false });
+                input.value = '';
+                saveTodos();
+            }
+        }
+        function toggleTodo(index) { todos[index].completed = !todos[index].completed; saveTodos(); }
+        function deleteTodo(index) { if(confirm('이 할 일을 삭제하시겠습니까?')) { todos.splice(index, 1); saveTodos(); } }
+        function editTodo(index) {
+            const newText = prompt('할 일을 수정하세요:', todos[index].text);
+            if(newText !== null && newText.trim() !== '') { todos[index].text = newText.trim(); saveTodos(); }
+        }
+
+        /* --- 4. Calendar --- */
+        let calDate = new Date();
+        let events = JSON.parse(localStorage.getItem('calEvents')) || {};
+
+        function saveEvents() { localStorage.setItem('calEvents', JSON.stringify(events)); }
+
+        function openCalendar() { document.getElementById('calendar-modal').classList.add('show'); renderCalendar(); }
+        function closeCalendar() { document.getElementById('calendar-modal').classList.remove('show'); }
+        
+        function changeMonth(dir) { calDate.setMonth(calDate.getMonth() + dir); renderCalendar(); }
+
+        function renderCalendar() {
+            const year = calDate.getFullYear();
+            const month = calDate.getMonth();
+            document.getElementById('cal-title').innerText = `${year}년 ${month + 1}월`;
+
+            const grid = document.getElementById('cal-grid');
+            grid.innerHTML = '';
+            
+            const days = ['일', '월', '화', '수', '목', '금', '토'];
+            days.forEach(d => {
+                const div = document.createElement('div');
+                div.className = 'cal-day-name'; div.innerText = d; grid.appendChild(div);
+            });
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const lastDate = new Date(year, month + 1, 0).getDate();
+
+            for(let i=0; i<firstDay; i++) {
+                const empty = document.createElement('div'); grid.appendChild(empty);
+            }
+
+            for(let i=1; i<=lastDate; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'cal-cell';
+                const dateKey = `${year}-${String(month+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
+                
+                cell.innerHTML = `<div class="cal-date">${i}</div>`;
+                
+                if(events[dateKey]) {
+                    events[dateKey].forEach((ev, idx) => {
+                        const evDiv = document.createElement('div');
+                        evDiv.className = 'cal-event'; evDiv.innerText = ev;
+                        evDiv.onclick = (e) => {
+                            e.stopPropagation();
+                            if(confirm(`'${ev}' 일정을 삭제하시겠습니까?`)) {
+                                events[dateKey].splice(idx, 1);
+                                if(events[dateKey].length === 0) delete events[dateKey];
+                                saveEvents(); renderCalendar();
+                            }
+                        };
+                        cell.appendChild(evDiv);
+                    });
+                }
+
+                cell.onclick = () => {
+                    const newEvent = prompt(`${month+1}월 ${i}일에 추가할 일정을 입력하세요:`);
+                    if(newEvent && newEvent.trim()) {
+                        if(!events[dateKey]) events[dateKey] = [];
+                        events[dateKey].push(newEvent.trim());
+                        saveEvents(); renderCalendar();
+                    }
+                };
                 grid.appendChild(cell);
             }
         }
 
-        /* --- 4. Mental Care Modal --- */
+        /* --- 5. Grass Tracker --- */
+        function initGrass() {
+            let attendance = JSON.parse(localStorage.getItem('attendanceData')) || [];
+            if (!attendance.includes(todayStr)) {
+                attendance.push(todayStr); localStorage.setItem('attendanceData', JSON.stringify(attendance));
+            }
+            const grid = document.getElementById('grass-grid'); grid.innerHTML = '';
+            for (let i = 29; i >= 0; i--) {
+                const d = new Date(); d.setDate(d.getDate() - i);
+                const dateStr = d.toISOString().split('T')[0];
+                const cell = document.createElement('div');
+                cell.className = 'grass-cell';
+                if (attendance.includes(dateStr)) cell.classList.add('active');
+                cell.title = dateStr; grid.appendChild(cell);
+            }
+        }
+
+        /* --- 6. Mental Care Modal --- */
         const mentalTexts = {
             '피곤함': '피곤해? 그럼 일단 KBS 조져. 그리고 절대 자지마. 너가 꿈을 꿀 때 경쟁자들은 꿈을 이루고있다는걸 명심해. KBS보고 잠 깬 뒤엔 얄짤없이 펜 잡아라.',
             '귀찮음': '귀찮지? 네 경쟁자들은 지금 이 순간에도 문제들을 씹어 먹고 있다. 의치한이 그렇게 만만해 보이냐? 딱 5분만 책 펴놓고 있어 봐라.',
             '무기력함': '처음 반수를 결심했던 그 독기를 기억해라. 남은 시간 동안 결과로 증명하면 이 모든 과정은 전설이 된다. 넌 할 수 있다.'
         };
-
-        function showModal(type) {
-            document.getElementById('modal-msg').innerText = mentalTexts[type];
-            document.getElementById('modal').classList.add('show');
+        function showMentalModal(type) {
+            document.getElementById('mental-modal-msg').innerText = mentalTexts[type];
+            document.getElementById('mental-modal').classList.add('show');
         }
+        function closeMentalModal() { document.getElementById('mental-modal').classList.remove('show'); }
 
-        function closeModal() {
-            document.getElementById('modal').classList.remove('show');
-        }
-
-        /* Initialize */
+        /* Init */
         window.onload = () => {
-            loadImages(); // 켜지자마자 저장된 이미지 불러오기
+            loadImages();
             calculateDDay();
-            renderApps();
+            loadTodos();
             initGrass();
+            rotateQuote(); // 처음에 명언 하나 띄우기
             
+            setInterval(rotateQuote, 1800000); // 30분(1800000ms)마다 명언 변경
             setInterval(calculateDDay, 3600000); 
         };
     </script>
