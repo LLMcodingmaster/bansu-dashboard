@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     
-    <!-- 아이패드 및 크롬 앱 아이콘 적용 -->
     <link rel="apple-touch-icon" href="icon.png">
-    <link rel="icon" type="image/png" href="icon.png">    
+    <link rel="icon" type="image/png" href="icon.png">
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>반수생 멘탈 관리 대시보드</title>
@@ -105,11 +104,12 @@
         .mental-btn { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); padding: 20px; border-radius: 16px; font-size: 22px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
         .mental-btn:active { transform: scale(0.98); }
 
-        /* Grass Tracker */
+        /* Grass Tracker (목표 달성) */
         .grass-section { height: 120px; }
         .grass-grid { display: flex; gap: 6px; margin-top: 12px; overflow-x: auto; padding-bottom: 8px; }
-        .grass-cell { width: 24px; height: 24px; border-radius: 6px; background-color: #2c2c2e; flex-shrink: 0; }
-        .grass-cell.active { background-color: var(--success); box-shadow: 0 0 8px rgba(48, 209, 88, 0.4); }
+        .grass-cell { width: 24px; height: 24px; border-radius: 6px; background-color: #2c2c2e; flex-shrink: 0; transition: background-color 0.3s; }
+        .grass-cell.success { background-color: var(--success); box-shadow: 0 0 8px rgba(48, 209, 88, 0.4); }
+        .grass-cell.fail { background-color: var(--danger); box-shadow: 0 0 8px rgba(255, 69, 58, 0.4); }
 
         /* Modals */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.3s ease; z-index: 1000; }
@@ -208,7 +208,7 @@
 
     <!-- Grass Tracker -->
     <div class="grass-section panel">
-        <h2 class="section-title">최근 30일 출석 기록</h2>
+        <h2 class="section-title">최근 30일 목표 달성 기록</h2>
         <div class="grass-grid" id="grass-grid"></div>
     </div>
 
@@ -304,7 +304,7 @@
             "오늘의 치열함이 내일의 여유를 만든다.", "공부는 끝이 없다. 끝까지 가는 자가 승리한다.", "네가 흘린 땀은 결코 헛되지 않을 것이다.",
             "성공의 비결은 단 하나, 절대 포기하지 않는 것이다.", "너의 미래는 네가 오늘 무엇을 하느냐에 달려 있다.", "자신을 이기는 자가 세상을 이긴다.",
             "의치한 27학번, 네 이름이 불릴 자리다.", "네 인생의 주인공은 바로 너다. 멋진 엔딩을 만들어라.", "메디컬은 운이 아니라 압도적인 실력이다.",
-            "피나는 노력, 메디컬로 가는 첫 번째 관문이다.", "마지막까지 펜을 놓지 않는 자가 승리한다."
+            "변하지 않는 초심, 메디컬로 가는 첫 번째 관문이다.", "마지막까지 펜을 놓지 않는 자가 승리한다."
         ];
         function rotateQuote() {
             const qd = document.getElementById('quote-display');
@@ -313,7 +313,7 @@
         }
         document.getElementById('quote-display').style.transition = "opacity 0.3s ease";
 
-        /* --- Image Upload (2개 고정) --- */
+        /* --- Image Upload --- */
         let currentUploadTarget = null;
         function triggerImageUpload(boxId) { currentUploadTarget = boxId; document.getElementById('image-uploader').click(); }
         document.getElementById('image-uploader').addEventListener('change', function(e) {
@@ -411,7 +411,6 @@
             const score = document.getElementById('mock-score').value.trim();
 
             if(!name || !session) { alert("모의고사명과 회차는 필수입니다."); return; }
-
             if(!session.endsWith('회') && !isNaN(session)) { session = session + '회'; }
 
             const now = new Date();
@@ -499,7 +498,7 @@
                 "주변 환경을 정리하고 독서실 독서대 앞에 똑바로 앉아라. 자세가 흐트러지면 정신도 흐트러진다.",
                 "기하 문제 하나, 언매 지문 하나만 끝내자. 그렇게 하나씩 격파하다 보면 귀찮음은 사라진다.",
                 "네 경쟁자들은 오늘 네가 나태해지기를 간절히 바라고 있다. 그들의 뜻대로 움직여줄 셈인가?",
-                "귀찮음을 극복하는 매 매 순간이 너를 의치한에 한 걸음 더 가깝게 만든다. 독종이 되어라.",
+                "귀찮음을 극복하는 매 순간이 너를 의치한에 한 걸음 더 가깝게 만든다. 독종이 되어라.",
                 "생각을 비워라. 감정을 빼라. 그냥 기계처럼 책을 펴고 연필을 쥐고 문제를 풀어라. 당장 시작해라."
             ],
             '무기력함': [
@@ -553,10 +552,16 @@
             document.getElementById('dday-9').innerText = `9평 D-${Math.ceil((sepMock - today) / 86400000)}`;
         }
 
-        /* --- Todo List Logic (텍스트 수정 완료) --- */
+        /* --- Todo List Logic --- */
         let todos = []; const todayStr = new Date().toISOString().split('T')[0];
+        
         function loadTodos() { todos = JSON.parse(localStorage.getItem('todos_' + todayStr)) || []; renderTodos(); }
-        function saveTodos() { localStorage.setItem('todos_' + todayStr, JSON.stringify(todos)); renderTodos(); }
+        function saveTodos() { 
+            localStorage.setItem('todos_' + todayStr, JSON.stringify(todos)); 
+            renderTodos(); 
+            initGrass(); // 상태가 바뀔 때 잔디밭도 즉시 업데이트
+        }
+        
         function renderTodos() {
             const list = document.getElementById('todo-list'); list.innerHTML = ''; let completedCount = 0;
             todos.forEach((todo, idx) => {
@@ -573,11 +578,11 @@
                 progressEl.style.color = "#8e8e93"; 
             } else {
                 const p = Math.round((completedCount / todos.length) * 100);
-                // 텍스트 수정 영역: Today 목표달성
                 progressEl.innerText = p === 100 ? "Today 목표달성 100% - 내일도 존나 열심히 달려보자🔥" : `Today 목표달성까지 ${p}%`;
                 progressEl.style.color = p === 100 ? "var(--success)" : "#fff";
             }
         }
+        
         function addTodo() { const input = document.getElementById('new-todo'); const text = input.value.trim(); if(text) { todos.push({ text: text, completed: false }); input.value = ''; saveTodos(); } }
         function toggleTodo(index) { todos[index].completed = !todos[index].completed; saveTodos(); }
         function deleteTodo(index) { if(confirm('삭제하시겠습니까?')) { todos.splice(index, 1); saveTodos(); } }
@@ -604,14 +609,33 @@
         function addCalEvent(dateKey) { const ev = prompt("일정 입력:"); if(ev) { if(!events[dateKey]) events[dateKey] = []; events[dateKey].push(ev); saveEvents(); renderCalendar(); } }
         function deleteCalEvent(dateKey, idx) { if(confirm("삭제?")) { events[dateKey].splice(idx, 1); saveEvents(); renderCalendar(); } }
 
-        /* --- Grass Tracker --- */
+        /* --- Grass Tracker (목표 달성 로직 반영) --- */
         function initGrass() {
-            let att = JSON.parse(localStorage.getItem('attendanceData')) || [];
-            if (!att.includes(todayStr)) { att.push(todayStr); localStorage.setItem('attendanceData', JSON.stringify(att)); }
-            const grid = document.getElementById('grass-grid'); grid.innerHTML = '';
+            const grid = document.getElementById('grass-grid'); 
+            grid.innerHTML = '';
+            
             for (let i = 29; i >= 0; i--) {
-                const d = new Date(); d.setDate(d.getDate() - i); const ds = d.toISOString().split('T')[0];
-                grid.innerHTML += `<div class="grass-cell ${att.includes(ds) ? 'active' : ''}" title="${ds}"></div>`;
+                const d = new Date(); d.setDate(d.getDate() - i); 
+                const ds = d.toISOString().split('T')[0];
+                
+                const cell = document.createElement('div');
+                cell.className = 'grass-cell';
+                cell.title = ds;
+
+                // 해당 날짜의 투두리스트 데이터를 불러와서 검사
+                const dayTodosStr = localStorage.getItem('todos_' + ds);
+                if (dayTodosStr) {
+                    const dayTodos = JSON.parse(dayTodosStr);
+                    if (dayTodos.length > 0) {
+                        const isAllCompleted = dayTodos.every(t => t.completed);
+                        if (isAllCompleted) {
+                            cell.classList.add('success'); // 100% 완료 -> 초록색
+                        } else {
+                            cell.classList.add('fail');    // 1개라도 미완료 -> 빨간색
+                        }
+                    }
+                }
+                grid.appendChild(cell);
             }
         }
 
