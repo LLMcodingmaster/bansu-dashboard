@@ -35,7 +35,7 @@
             display: flex; justify-content: space-between; align-items: stretch; gap: 20px; margin-bottom: 24px;
         }
 
-        .goal-section { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 16px; padding: 20px; }
+        .goal-section { flex: 1.2; display: flex; flex-direction: column; justify-content: center; gap: 16px; padding: 20px; }
         .goal-title {
             font-size: 24px; font-weight: 800; letter-spacing: -0.5px; margin: 0;
             line-height: 1.3; word-break: keep-all; min-height: 62px;
@@ -54,9 +54,9 @@
         .univ-box:hover { transform: scale(1.05); border: 1px solid rgba(255,255,255,0.8); }
 
         /* Timer Section */
-        .timer-section { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+        .timer-section { flex: 0.8; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
         .timer-display { font-size: 56px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: 2px; color: var(--accent); margin-bottom: 12px; text-shadow: 0 0 20px rgba(10, 132, 255, 0.4); }
-        .timer-presets { display: flex; gap: 8px; margin-bottom: 12px; }
+        .timer-presets { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; justify-content: center; }
         .preset-btn { background: #2c2c2e; color: #fff; border: 1px solid #3a3a3c; padding: 6px 12px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; }
         .preset-btn:hover { background: #3a3a3c; }
         .timer-controls { display: flex; gap: 12px; }
@@ -104,7 +104,8 @@
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.3s ease; z-index: 1000; }
         .modal-overlay.show { opacity: 1; visibility: visible; }
         .modal-content { background: #1c1c1e; width: 90%; max-width: 800px; padding: 24px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); text-align: left; max-height: 85vh; overflow-y: auto; }
-        .modal-text { font-size: 42px; font-weight: 800; line-height: 1.5; color: #fff; text-align: center; }
+        
+        .mental-pure-text { font-size: 42px; font-weight: 800; line-height: 1.5; color: #fff; text-align: center; word-break: keep-all; text-shadow: 0 4px 20px rgba(0,0,0,0.5); }
         .close-btn { width: 100%; padding: 14px; margin-top: 20px; border-radius: 12px; background: #3a3a3c; color: #fff; border: none; font-size: 16px; font-weight: 700; cursor: pointer; }
 
         /* Mock Record Specific */
@@ -141,15 +142,15 @@
         <div class="timer-section panel">
             <div class="timer-display" id="timer-display">00:00</div>
             <div class="timer-presets">
-                <button class="preset-btn" onclick="setTimer(80)">국어 80분</button>
-                <button class="preset-btn" onclick="setTimer(100)">수학 100분</button>
-                <button class="preset-btn" onclick="setTimer(70)">영어 70분</button>
-                <button class="preset-btn" onclick="setTimer(30)">탐구 30분</button>
+                <button class="preset-btn" onclick="setTimer(80)">국어 80</button>
+                <button class="preset-btn" onclick="setTimer(100)">수학 100</button>
+                <button class="preset-btn" onclick="setTimer(70)">영어 70</button>
+                <button class="preset-btn" onclick="setTimer(30)">탐구 30</button>
             </div>
             <div class="timer-controls">
                 <button class="ctrl-btn play" onclick="startTimer()">▶ 시작</button>
                 <button class="ctrl-btn stop" onclick="pauseTimer()">⏸ 정지</button>
-                <button class="ctrl-btn" onclick="resetTimer()">↺ 초기화</button>
+                <button class="ctrl-btn" onclick="resetTimer()">↺ 리셋</button>
             </div>
         </div>
 
@@ -195,17 +196,16 @@
     </div>
 
     <!-- Modals -->
-    <!-- Mental Modal (No background panel, pure text) -->
+    <!-- Mental Modal (Pure text) -->
     <div class="modal-overlay" id="mental-modal" onclick="closeMentalModal()">
         <div style="width: 80%; max-width: 800px; text-align: center;">
-            <div class="modal-text" id="mental-modal-msg"></div>
+            <div class="mental-pure-text" id="mental-modal-msg"></div>
         </div>
     </div>
 
     <!-- Calendar Modal -->
     <div class="modal-overlay" id="calendar-modal">
         <div class="modal-content">
-            <!-- (생략 없이 이전과 동일한 달력 구조 생성됨) -->
             <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
                 <button style="background:none; border:none; color:#fff; font-size:24px; cursor:pointer;" onclick="changeMonth(-1)">◀</button>
                 <div style="font-size: 24px; font-weight: 700; color: #fff;" id="cal-title"></div>
@@ -235,13 +235,13 @@
             <div class="mock-header">
                 <button class="mock-back-btn" onclick="backToMockMain()">◀ 과목 선택</button>
                 <h2 style="margin:0; color:#fff;" id="mock-subject-title">국어</h2>
-                <div style="width: 80px;"></div> <!-- 정렬용 빈 공간 -->
+                <div style="width: 80px;"></div> 
             </div>
             
             <div class="mock-input-group">
-                <input type="text" class="mock-input" id="mock-name" placeholder="모의고사 이름 (예: 이감)">
-                <input type="text" class="mock-input" id="mock-year" placeholder="연도 (예: 2026)" style="flex:0.5;">
-                <input type="text" class="mock-input" id="mock-session" placeholder="회차 (예: 파이널 1회)" style="flex:0.7;">
+                <input type="text" class="mock-input" id="mock-name" placeholder="모의고사명 (예: 이감)">
+                <input type="text" class="mock-input" id="mock-year" placeholder="연도" style="flex:0.5;">
+                <input type="text" class="mock-input" id="mock-session" placeholder="회차" style="flex:0.5;">
                 <input type="text" class="mock-input" id="mock-score" placeholder="점수" style="flex:0.5;">
                 <button class="mock-add-btn" onclick="addMockRecord()">추가</button>
             </div>
@@ -252,13 +252,42 @@
     </div>
 
     <script>
-        /* --- Quotes --- */
+        /* --- Quotes (100개 채움) --- */
         const quotes = [
             "네가 자는 동안 누군가는 꿈을 이루고 있다.", "서울대라는 타이틀에 안주하지 않고 메디컬을 향해 던진 승부수, 결과로 증명해라.",
             "고통은 순간이지만, 포기는 영원히 남는다.", "기적은 노력의 또 다른 이름이다.", "최선을 다했다는 변명은 결과 앞에서 무의미하다.",
-            "지금 땀을 흘리지 않으면 나중에 눈물을 흘려야 한다.", "오늘 걷지 않으면 내일은 뛰어야 한다.", "불안하면 공부해라.",
-            "재능은 한계를 만들지만, 노력은 기적을 만든다.", "포기하고 싶은 그 순간이 진짜 승부처다.", "메디컬은 운이 아니라 독기다."
-            /* 명언 리스트 100개 중략 (실제 사용 시 기존 100개 유지) - 가독성을 위해 일부 생략하여 롤백 방지 */
+            "지금 땀을 흘리지 않으면 나중에 눈물을 흘려야 한다.", "오늘 걷지 않으면 내일은 뛰어야 한다.", "불안하면 공부해라. 불안함은 지식이 부족할 때 찾아온다.",
+            "재능은 한계를 만들지만, 노력은 기적을 만든다.", "포기하고 싶은 그 순간이 진짜 승부처다.", "메디컬은 운이 아니라 독기다.",
+            "시작은 반이 아니다. 끝까지 해야 끝이다.", "성공은 가장 절박한 자의 몫이다.", "오늘의 유혹을 참으면, 내일의 인생이 바뀐다.",
+            "핑계를 찾는 대신 방법을 찾아라.", "기하의 본질은 직관과 논리다. 핑계 대지 말고 뚫어내라.", "지금 이 순간에도 네 경쟁자는 페이지를 넘기고 있다.",
+            "나를 죽이지 못하는 고통은 나를 더 강하게 만든다.", "할 수 있다고 믿든, 할 수 없다고 믿든, 네가 믿는 대로 된다.", "네 한계는 네가 정하는 것이다. 선을 그어버리지 마라.",
+            "의치한 27학번, 내 자리는 이미 정해져 있다.", "가장 어두운 밤이 지나야 가장 눈부신 새벽이 온다.", "지금의 고생은 훗날 네가 입을 가운의 무게다.",
+            "타협하는 순간, 평범해진다.", "승리는 1%의 재능과 99%의 끈기다.", "네 인생을 바꿀 수 있는 사람은 오직 너뿐이다.",
+            "나중에 후회할 일은 지금 만들지 마라.", "펜을 잡는 순간 모든 잡념을 버려라.", "남들과 똑같이 해서는 남들과 다를 수 없다.",
+            "목표가 확실한 사람은 흔들리지 않는다.", "성적은 투자한 시간에 비례한다. 배신하지 않는다.", "네가 버린 1분이 모여 네 대학 간판을 바꾼다.",
+            "성공으로 가는 엘리베이터는 고장 났다. 계단으로 올라가라.", "힘들 때 쉬는 건 하수다. 힘들 때 견디는 게 고수다.", "스마트폰을 내려놓는 순간, 너의 점수가 올라간다.",
+            "과정은 고통스럽지만 결과는 달콤하다.", "오늘 하루를 완벽하게 통제해라. 그러면 인생이 통제된다.", "운명은 우연이 아니라 선택이다.",
+            "가장 위대한 승리는 나 자신을 이기는 것이다.", "기출은 거짓말을 하지 않는다.", "아무것도 하지 않으면 아무 일도 일어나지 않는다.",
+            "네가 할 수 있는 최선보다 항상 한 발짝 더 가라.", "최고의 자리를 박차고 나온 그 독기를 끝까지 밀어붙여라.", "성공한 사람들의 공통점은 포기를 모른다는 것이다.",
+            "너의 경쟁자는 어제의 너다.", "눈물로 씨를 뿌리는 자는 기쁨으로 거두리라.", "피할 수 없다면, 압도해라.",
+            "가장 무서운 적은 나의 나태함이다.", "하루하루를 인생의 마지막 날처럼 치열하게 살아라.", "지금 편하면 나중에 불편해진다.",
+            "정답은 오직 네 펜 끝에 있다.", "쉬운 길은 붐빈다. 어려운 길이 정답이다.", "네가 흘린 땀방울 하나가 수능 점수 1점이다.",
+            "오늘의 나태는 내일의 후회로 돌아온다.", "목표를 낮추지 말고 노력을 높여라.", "변명은 실패자들의 전유물이다.",
+            "할 수 있는 일을 다 하고 나서 기적을 바라라.", "어차피 할 거라면 1등을 목표로 해라.", "네가 공부하는 이유는 너 자신을 증명하기 위해서다.",
+            "불가능은 사실이 아니라 의견일 뿐이다.", "기초가 흔들리면 탑은 무너진다. 기본에 충실해라.", "공부는 머리로 하는 게 아니라 엉덩이로 하는 거다.",
+            "네가 포기하는 순간, 누군가는 네 자리를 차지한다.", "오늘 하루도 버티지 못하면서 어떻게 인생을 바꾸려 하는가.", "성공은 반복되는 일상 속에 숨어 있다.",
+            "생각만 하지 말고 당장 행동해라.", "네가 피곤함을 느낄 때, 합격은 더 가까워진다.", "승자는 행동으로 말하고 패자는 핑계로 말한다.",
+            "모든 위대한 성취는 시간과 인내의 결과다.", "의사가 되는 길에 적당히는 없다.", "오늘의 한계가 내일의 출발점이다.",
+            "실패는 넘어지는 것이 아니라 주저앉아 있는 것이다.", "네가 꿈을 꾸는 동안 시간은 무심하게 흘러간다.", "공부가 힘들다고 불평하지 마라. 공부할 수 있는 것도 특권이다.",
+            "한 번의 실수는 경험이지만, 두 번의 실수는 실패다.", "결과가 모든 것을 증명한다.", "네가 걷는 이 길이 네 인생의 가장 위대한 여정이 될 것이다.",
+            "가장 빛나는 순간은 가장 어두운 터널 끝에 있다.", "네 자신을 믿어라. 기적은 거기서부터 시작된다.", "오늘 푼 문제 하나가 너의 운명을 바꿀 수 있다.",
+            "타인의 시선보다 네 자신의 확신이 중요하다.", "성공하려면 먼저 성공할 수 있다고 믿어야 한다.", "노력은 절대 너를 배신하지 않는다.",
+            "네가 선택한 길이다. 끝까지 책임져라.", "시간은 누구에게나 공평하지만, 결과는 공평하지 않다.", "지금 이 순간의 고통을 즐겨라.",
+            "너의 한계는 아직 오지 않았다.", "목표는 달성하기 위해 존재하는 것이다.", "네가 포기하지 않는 한 실패는 없다.",
+            "오늘의 치열함이 내일의 여유를 만든다.", "공부는 끝이 없다. 끝까지 가는 자가 승리한다.", "네가 흘린 땀은 결코 헛되지 않을 것이다.",
+            "성공의 비결은 단 하나, 절대 포기하지 않는 것이다.", "너의 미래는 네가 오늘 무엇을 하느냐에 달려 있다.", "자신을 이기는 자가 세상을 이긴다.",
+            "의치한 27학번, 네 이름이 불릴 자리다.", "네 인생의 주인공은 바로 너다. 멋진 엔딩을 만들어라.", "메디컬은 운이 아니라 압도적인 실력이다.",
+            "언매 15분 컷, 메디컬로 가는 첫 번째 관문이다.", "마지막까지 펜을 놓지 않는 자가 승리한다."
         ];
         function rotateQuote() {
             const qd = document.getElementById('quote-display');
@@ -377,8 +406,6 @@
             document.getElementById('mock-name').value = '';
             document.getElementById('mock-session').value = '';
             document.getElementById('mock-score').value = '';
-            // 연도는 연속 입력 편의를 위해 유지
-
             renderMockList();
         }
 
@@ -409,7 +436,7 @@
             document.getElementById('dday-9').innerText = `9평 D-${Math.ceil((sepMock - today) / 86400000)}`;
         }
 
-        /* Todo (기존 로직 유지) */
+        /* Todo */
         let todos = []; const todayStr = new Date().toISOString().split('T')[0];
         function loadTodos() { todos = JSON.parse(localStorage.getItem('todos_' + todayStr)) || []; renderTodos(); }
         function saveTodos() { localStorage.setItem('todos_' + todayStr, JSON.stringify(todos)); renderTodos(); }
@@ -435,7 +462,7 @@
         function toggleTodo(index) { todos[index].completed = !todos[index].completed; saveTodos(); }
         function deleteTodo(index) { if(confirm('삭제하시겠습니까?')) { todos.splice(index, 1); saveTodos(); } }
 
-        /* Calendar (약식 유지) */
+        /* Calendar */
         let calDate = new Date(); let events = JSON.parse(localStorage.getItem('calEvents')) || {};
         function saveEvents() { localStorage.setItem('calEvents', JSON.stringify(events)); }
         function openCalendar() { document.getElementById('calendar-modal').classList.add('show'); renderCalendar(); }
@@ -446,16 +473,16 @@
             document.getElementById('cal-title').innerText = `${year}년 ${month + 1}월`;
             const grid = document.getElementById('cal-grid'); grid.innerHTML = '';
             const firstDay = new Date(year, month, 1).getDay(); const lastDate = new Date(year, month + 1, 0).getDate();
-            ['일', '월', '화', '수', '목', '금', '토'].forEach(d => grid.innerHTML += `<div style="text-align:center; color:var(--text-sub);">${d}</div>`);
+            ['일', '월', '화', '수', '목', '금', '토'].forEach(d => grid.innerHTML += `<div style="text-align:center; color:var(--text-sub); margin-bottom: 8px; font-weight: bold;">${d}</div>`);
             for(let i=0; i<firstDay; i++) grid.innerHTML += `<div></div>`;
             for(let i=1; i<=lastDate; i++) {
                 const dateKey = `${year}-${String(month+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
-                let eventHtml = (events[dateKey]||[]).map((ev,idx) => `<div style="font-size:11px; background:var(--accent); color:#fff; padding:2px; margin-top:2px; border-radius:4px;" onclick="event.stopPropagation(); deleteCalEvent('${dateKey}', ${idx})">${ev}</div>`).join('');
-                grid.innerHTML += `<div style="background:#2c2c2e; border-radius:8px; min-height:60px; padding:6px; cursor:pointer;" onclick="addCalEvent('${dateKey}')"><div style="font-weight:bold; color:#fff;">${i}</div>${eventHtml}</div>`;
+                let eventHtml = (events[dateKey]||[]).map((ev,idx) => `<div style="font-size:11px; background:var(--accent); color:#fff; padding:2px; margin-top:2px; border-radius:4px; overflow:hidden;" onclick="event.stopPropagation(); deleteCalEvent('${dateKey}', ${idx})">${ev}</div>`).join('');
+                grid.innerHTML += `<div style="background:#2c2c2e; border-radius:8px; min-height:60px; padding:6px; cursor:pointer;" onclick="addCalEvent('${dateKey}')"><div style="font-weight:bold; color:#fff; font-size:14px;">${i}</div>${eventHtml}</div>`;
             }
         }
         function addCalEvent(dateKey) { const ev = prompt("일정 입력:"); if(ev) { if(!events[dateKey]) events[dateKey] = []; events[dateKey].push(ev); saveEvents(); renderCalendar(); } }
-        function deleteCalEvent(dateKey, idx) { if(confirm("삭제?")) { events[dateKey].splice(idx, 1); saveEvents(); renderCalendar(); } }
+        function deleteCalEvent(dateKey, idx) { if(confirm("삭제할까요?")) { events[dateKey].splice(idx, 1); saveEvents(); renderCalendar(); } }
 
         /* Grass Tracker */
         function initGrass() {
