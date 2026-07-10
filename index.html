@@ -104,7 +104,7 @@
         .mental-btn { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); padding: 20px; border-radius: 16px; font-size: 22px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
         .mental-btn:active { transform: scale(0.98); }
 
-        /* Grass Tracker (목표 달성) */
+        /* Grass Tracker */
         .grass-section { height: 120px; }
         .grass-grid { display: flex; gap: 6px; margin-top: 12px; overflow-x: auto; padding-bottom: 8px; }
         .grass-cell { width: 24px; height: 24px; border-radius: 6px; background-color: #2c2c2e; flex-shrink: 0; transition: background-color 0.3s; }
@@ -142,7 +142,6 @@
     <input type="file" id="image-uploader" accept="image/*" style="display: none;">
 
     <div class="header-container">
-        <!-- Goal & Images -->
         <div class="goal-section panel">
             <h1 class="goal-title" id="quote-display">고의, 연치, 동의한 27학번</h1>
             <div class="univ-images">
@@ -151,7 +150,6 @@
             </div>
         </div>
 
-        <!-- Timer -->
         <div class="timer-section panel">
             <div class="timer-display" id="timer-display">00:00</div>
             <div class="timer-presets">
@@ -171,7 +169,6 @@
             </div>
         </div>
 
-        <!-- D-Day -->
         <div class="dday-section panel">
             <div class="dday-item" id="dday-suneung">수능 D-??</div>
             <div class="dday-item sub" id="dday-9">9평 D-??</div>
@@ -179,7 +176,6 @@
     </div>
 
     <div class="main-container">
-        <!-- Todo Section -->
         <div class="todo-section panel">
             <div class="section-header">
                 <h2 class="section-title">오늘의 미션</h2>
@@ -197,7 +193,6 @@
             <ul class="todo-list" id="todo-list"></ul>
         </div>
 
-        <!-- Mental Section -->
         <div class="mental-section panel">
             <h2 class="section-title" style="text-align: center;">긴급 멘탈 케어</h2>
             <button class="mental-btn" onclick="showMentalModal('피곤함')">피곤함 😵‍💫</button>
@@ -206,21 +201,17 @@
         </div>
     </div>
 
-    <!-- Grass Tracker -->
     <div class="grass-section panel">
         <h2 class="section-title">최근 30일 목표 달성 기록</h2>
         <div class="grass-grid" id="grass-grid"></div>
     </div>
 
-    <!-- Modals -->
-    <!-- Mental Modal -->
     <div class="modal-overlay" id="mental-modal" onclick="closeMentalModal()">
         <div style="width: 85%; max-width: 850px; text-align: center;">
             <div class="mental-pure-text" id="mental-modal-msg"></div>
         </div>
     </div>
 
-    <!-- Calendar Modal -->
     <div class="modal-overlay" id="calendar-modal">
         <div class="modal-content">
             <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
@@ -233,7 +224,6 @@
         </div>
     </div>
 
-    <!-- Mock Record Modal -->
     <div class="modal-overlay" id="mock-modal">
         <div class="modal-content" id="mock-main-view">
             <h2 style="margin-top:0; color:#fff; text-align:center;">실모 기록장</h2>
@@ -269,6 +259,18 @@
     </div>
 
     <script>
+        /* --- 0. 한국 표준시 전용 날짜 헬퍼 함수 (UTC 9시간 오차 해결) --- */
+        function getLocalDateStr() {
+            const d = new Date();
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        let todos = []; 
+        let todayStr = getLocalDateStr(); // 최초 로드 시 오늘 날짜 매핑
+
         /* --- Quotes --- */
         const quotes = [
             "네가 자는 동안 누군가는 꿈을 이루고 있다.", "서울대라는 타이틀에 안주하지 않고 메디컬을 향해 던진 승부수, 결과로 증명해라.",
@@ -282,7 +284,7 @@
             "타협하는 순간, 평범해진다.", "승리는 1%의 재능과 99%의 끈기다.", "네 인생을 바꿀 수 있는 사람은 오직 너뿐이다.",
             "나중에 후회할 일은 지금 만들지 마라.", "펜을 잡는 순간 모든 잡념을 버려라.", "남들과 똑같이 해서는 남들과 다를 수 없다.",
             "목표가 확실한 사람은 흔들리지 않는다.", "성적은 투자한 시간에 비례한다. 배신하지 않는다.", "네가 버린 1분이 모여 네 대학 간판을 바꾼다.",
-            "성공으로 가는 엘리베이터는 고장 났다. 계단으로 올라가라.", "힘들 때 쉬는 건 하수다. 힘들 때 견디는 게 고수다.", "스마트폰을 내려놓는 순간, 너의 점수가 올라간다.",
+            "성공으로 가는 엘리베이터는 고장 났다. 계단으로 올라가라.", "힘들 때 쉬는 건 하수다. 힘들 때 견디는 게 고수다.", "스톱워치를 5초 카운트다운해라. 5, 4, 3, 2, 1 하면 무조건 책을 펼치고 첫 줄을 읽는 거다.",
             "과정은 고통스럽지만 결과는 달콤하다.", "오늘 하루를 완벽하게 통제해라. 그러면 인생이 통제된다.", "운명은 우연이 아니라 선택이다.",
             "가장 위대한 승리는 나 자신을 이기는 것이다.", "기출은 거짓말을 하지 않는다.", "아무것도 하지 않으면 아무 일도 일어나지 않는다.",
             "네가 할 수 있는 최선보다 항상 한 발짝 더 가라.", "최고의 자리를 박차고 나온 그 독기를 끝까지 밀어붙여라.", "성공한 사람들의 공통점은 포기를 모른다는 것이다.",
@@ -304,7 +306,7 @@
             "오늘의 치열함이 내일의 여유를 만든다.", "공부는 끝이 없다. 끝까지 가는 자가 승리한다.", "네가 흘린 땀은 결코 헛되지 않을 것이다.",
             "성공의 비결은 단 하나, 절대 포기하지 않는 것이다.", "너의 미래는 네가 오늘 무엇을 하느냐에 달려 있다.", "자신을 이기는 자가 세상을 이긴다.",
             "의치한 27학번, 네 이름이 불릴 자리다.", "네 인생의 주인공은 바로 너다. 멋진 엔딩을 만들어라.", "메디컬은 운이 아니라 압도적인 실력이다.",
-            "변하지 않는 초심, 메디컬로 가는 첫 번째 관문이다.", "마지막까지 펜을 놓지 않는 자가 승리한다."
+            "변치 않는 초심, 메디컬로 가는 첫 번째 관문이다.", "마지막까지 펜을 놓지 않는 자가 승리한다."
         ];
         function rotateQuote() {
             const qd = document.getElementById('quote-display');
@@ -435,7 +437,7 @@
             if(newScore !== null) { mockData[currentSubject][index].score = newScore.trim(); localStorage.setItem('mockRecords', JSON.stringify(mockData)); renderMockList(); }
         }
 
-        /* --- Mental Care --- */
+        /* --- Mental Care (버튼별 30개) --- */
         const mentalTexts = {
             '피곤함': [
                 "피곤해? 그럼 일단 KBS 조져. 그리고 절대 자지마. 너가 꿈을 꿀 때 경쟁자들은 꿈을 이루고있다는걸 명심해. KBS보고 잠 깬 뒤엔 얄짤없이 펜 잡아라.",
@@ -553,13 +555,14 @@
         }
 
         /* --- Todo List Logic --- */
-        let todos = []; const todayStr = new Date().toISOString().split('T')[0];
-        
-        function loadTodos() { todos = JSON.parse(localStorage.getItem('todos_' + todayStr)) || []; renderTodos(); }
+        function loadTodos() { 
+            todos = JSON.parse(localStorage.getItem('todos_' + todayStr)) || []; 
+            renderTodos(); 
+        }
         function saveTodos() { 
             localStorage.setItem('todos_' + todayStr, JSON.stringify(todos)); 
             renderTodos(); 
-            initGrass(); // 상태가 바뀔 때 잔디밭도 즉시 업데이트
+            initGrass(); // 투두 변동 시 잔디 색상 실시간 연동
         }
         
         function renderTodos() {
@@ -609,29 +612,34 @@
         function addCalEvent(dateKey) { const ev = prompt("일정 입력:"); if(ev) { if(!events[dateKey]) events[dateKey] = []; events[dateKey].push(ev); saveEvents(); renderCalendar(); } }
         function deleteCalEvent(dateKey, idx) { if(confirm("삭제?")) { events[dateKey].splice(idx, 1); saveEvents(); renderCalendar(); } }
 
-        /* --- Grass Tracker (목표 달성 로직 반영) --- */
+        /* --- 2. Grass Tracker (자정 리셋 오차 전면 교정) --- */
         function initGrass() {
             const grid = document.getElementById('grass-grid'); 
             grid.innerHTML = '';
             
+            // 오늘 기준으로 정확히 과거 29일 전부터 오늘까지 역산
             for (let i = 29; i >= 0; i--) {
-                const d = new Date(); d.setDate(d.getDate() - i); 
-                const ds = d.toISOString().split('T')[0];
+                const d = new Date(); 
+                d.setDate(d.getDate() - i); 
+                
+                const year = d.getFullYear();
+                const month = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                const ds = `${year}-${month}-${day}`; // 한국 표준시 기준 포맷
                 
                 const cell = document.createElement('div');
                 cell.className = 'grass-cell';
                 cell.title = ds;
 
-                // 해당 날짜의 투두리스트 데이터를 불러와서 검사
                 const dayTodosStr = localStorage.getItem('todos_' + ds);
                 if (dayTodosStr) {
                     const dayTodos = JSON.parse(dayTodosStr);
                     if (dayTodos.length > 0) {
                         const isAllCompleted = dayTodos.every(t => t.completed);
                         if (isAllCompleted) {
-                            cell.classList.add('success'); // 100% 완료 -> 초록색
+                            cell.classList.add('success'); // 100% 성공 -> 초록잔디
                         } else {
-                            cell.classList.add('fail');    // 1개라도 미완료 -> 빨간색
+                            cell.classList.add('fail');    // 하나라도 실패 -> 빨간잔디
                         }
                     }
                 }
@@ -639,7 +647,29 @@
             }
         }
 
-        window.onload = () => { loadImages(); calculateDDay(); loadTodos(); initGrass(); rotateQuote(); setInterval(rotateQuote, 1800000); setInterval(calculateDDay, 3600000); };
+        /* --- 3. 실시간 자정 감시 엔진 (초 단위 백그라운드 체크) --- */
+        function startMidnightWatcher() {
+            setInterval(() => {
+                const currentStr = getLocalDateStr();
+                // 화면이 켜진 상태에서 날짜가 바뀌는 기점이 잡히면 실행
+                if (currentStr !== todayStr) {
+                    todayStr = currentStr; // 오늘 날짜 갱신
+                    loadTodos();           // 투두리스트 공백 리스트로 자동 전환
+                    initGrass();           // 잔디밭 한 칸 밀어내고 어제 기록 고정
+                    calculateDDay();       // 디데이 1일 감소 갱신
+                }
+            }, 1000); // 1초마다 가볍게 체크
+        }
+
+        window.onload = () => { 
+            loadImages(); 
+            calculateDDay(); 
+            loadTodos(); 
+            initGrass(); 
+            rotateQuote(); 
+            startMidnightWatcher(); // 감시 엔진 켜기
+            setInterval(rotateQuote, 1800000); 
+        };
     </script>
 </body>
 </html>
